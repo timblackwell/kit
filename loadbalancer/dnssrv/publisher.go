@@ -65,12 +65,13 @@ func (p *Publisher) loop(endpoints []endpoint.Endpoint, md5 string) {
 				p.logger.Log("name", p.name, "err", err)
 				continue // don't replace good endpoints with bad ones
 			}
+			p.logger.Log("md5", md5, "new_md5", newmd5)
 			if newmd5 == md5 {
 				continue // no change
 			}
 			endpoints = makeEndpoints(addrs, p.factory, p.logger)
 			md5 = newmd5
-
+			p.logger.Log("endpoint adds", addrs)
 		case <-p.quit:
 			return
 		}
